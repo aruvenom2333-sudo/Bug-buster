@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Debugger - Code Complexity Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: #161b22;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 1px solid #30363d;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #58a6ff;
+        }
+        .subtitle {
+            color: #8b949e;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+        .subtitle span {
+            background: #21262d;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: monospace;
+            color: #f0883e;
+        }
+        textarea {
+            width: 100%;
+            background: #0d1117;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            min-height: 250px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        textarea:focus {
+            border-color: #58a6ff;
+        }
+        textarea::placeholder {
+            color: #484f58;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: #238636;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2ea043;
+        }
+        .btn-secondary {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+        }
+        .btn-secondary:hover {
+            background: #30363d;
+        }
+        .alert {
+            background: rgba(248, 81, 73, 0.12);
+            color: #ff7b72;
+            border: 1px solid rgba(248, 81, 73, 0.35);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        .examples {
+            margin-top: 16px;
+            padding: 16px;
+            background: #0d1117;
+            border-radius: 8px;
+            border: 1px solid #21262d;
+        }
+        .examples p {
+            color: #8b949e;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .examples code {
+            display: block;
+            background: #161b22;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #f0883e;
+            margin-top: 4px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: border 0.2s;
+        }
+        .examples code:hover {
+            border-color: #58a6ff;
+        }
+        .footer {
+            margin-top: 24px;
+            color: #484f58;
+            font-size: 12px;
+            text-align: center;
+            border-top: 1px solid #21262d;
+            padding-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ DSA Debugger</h1>
+        <p class="subtitle">
+            Paste your Python code and get <span>Time & Space Complexity</span> instantly
+        </p>
+        
+        <form action="/analyze" method="POST">
+            {% if error %}
+            <div class="alert">{{ error }}</div>
+            {% endif %}
+
+            <textarea name="code" id="codeInput" placeholder="Paste your Python code here...&#10;&#10;Example:&#10;def bubble_sort(arr):&#10;    for i in range(len(arr)):&#10;        for j in range(len(arr)-1):&#10;            if arr[j] > arr[j+1]:&#10;                arr[j], arr[j+1] = arr[j+1], arr[j]"></textarea>
+            
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">🔍 Analyze Complexity</button>
+                <button type="reset" class="btn btn-secondary">Clear</button>
+            </div>
+        </form>
+        
+        <div class="examples">
+            <p>💡 Quick examples to try (click to paste):</p>
+            <code onclick="document.getElementById('codeInput').value = this.innerText.trim()">
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
+            </code>
+            <code onclick="document.getElementById('codeInput').value = this.innerText.trim()">
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+            </code>
+            <code onclick="document.getElementById('codeInput').value = this.innerText.trim()">
+def binary_search(arr, target):
+    low, high = 0, len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+            </code>
+        </div>
+        
+        <div class="footer">
+            Built with Python, Flask & AST
+        </div>
+    </div>
+</body>
+</html>
+```
