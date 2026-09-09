@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}DSA Debugger - Code Complexity Analyzer{% endblock %}
+
+{% block content %}
+        <h1>⚡ DSA Debugger</h1>
+        <p class="subtitle">
+            Paste your Python code and get <span>Time & Space Complexity</span> instantly
+        </p>
+        
+        <form action="/analyze" method="POST">
+            {% if error %}
+            <div class="alert">{{ error }}</div>
+            {% endif %}
+
+            <textarea name="code" id="codeInput" placeholder="Paste your Python code here...&#10;&#10;Example:&#10;def bubble_sort(arr):&#10;    for i in range(len(arr)):&#10;        for j in range(le[...]
+            
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">🔍 Analyze Complexity</button>
+                <button type="reset" class="btn btn-secondary">Clear</button>
+            </div>
+        </form>
+        
+        <div class="examples">
+            <p>💡 Quick examples to try (click to paste):</p>
+            <code onclick="document.getElementById('codeInput').value = this.innerText.trim()">
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
+            </code>
+            <code onclick="document.getElementById('codeInput').value = this.innerText.trim()">
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+            </code>
+            <code onclick="document.getElementById('codeInput').value = this.innerText.trim()">
+def binary_search(arr, target):
+    low, high = 0, len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+            </code>
+        </div>
+        
+        <div class="footer">
+            Built with Python, Flask & AST
+        </div>
+{% endblock %}
