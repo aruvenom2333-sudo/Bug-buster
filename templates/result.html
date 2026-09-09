@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Results - DSA Debugger{% endblock %}
+
+{% block content %}
+        <a href="/" class="back-link">⬅ Back to Analyzer</a>
+        
+        <h1>📊 Analysis Complete</h1>
+        <p class="subtitle">Here is the complexity analysis of your code</p>
+        
+        <div class="result-grid">
+            <div class="result-card">
+                <div class="label">⏱ Time Complexity</div>
+                <div class="value time-value">{{ time }}</div>
+            </div>
+            <div class="result-card">
+                <div class="label">💾 Space Complexity</div>
+                <div class="value space-value">{{ space }}</div>
+            </div>
+        </div>
+        
+        <!-- Live Graph Section -->
+        <div class="graph-section">
+            <span class="label">📈 Performance Graph</span>
+            {% if graph_image %}
+                <img src="{{ graph_image }}" alt="Performance Graph">
+                <div style="color: #8b949e; font-size: 12px; margin-top: 12px;">
+                    Input sizes: {{ n_values }} | Execution times: {{ time_values }}
+                </div>
+            {% else %}
+                <div class="no-data">⚠️ Could not generate graph. Make sure your function takes an 'n' parameter and runs without errors.</div>
+            {% endif %}
+        </div>
+        
+        <div class="code-section">
+            <span class="label">📄 Your Code</span>
+            <pre>{{ code }}</pre>
+        </div>
+        
+        <div class="button-group">
+            <a href="/" class="btn btn-secondary">🔁 Analyze Another</a>
+        </div>
+        
+        <div class="footer">
+            Built with Python, Flask &amp; AST
+        </div>
+{% endblock %}
